@@ -1,0 +1,20 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/run/Dockerfile
+    command: ["python", "-m", "uvicorn", "app.main:app", "--app-dir=backend", "--host=0.0.0.0"]
+    ports:
+      - "8000:8000"
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/run/Dockerfile
+    working_dir: /workspaces/hometap_test_task/frontend
+    command: ["yarn", "start-ext"]
+    ports:
+      - "3000:3000"
+    environment:
+      - HOST=0.0.0.0
+    depends_on:
+      - backend
